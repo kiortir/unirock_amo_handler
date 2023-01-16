@@ -3,14 +3,14 @@ version: '3'
 services:
 
   application:
-    image: amo1csync:latest
-    container_name: fastapi
+    image: amo-handler
+    container_name: amo-fastapi
 
     depends_on:
       - redis
     build:
       context: ./
-    command: gunicorn app.main:app --bind 0.0.0.0:5000  -k uvicorn.workers.UvicornWorker
+    command: uvicorn lead_orchestrator.main:app --proxy-headers --host 0.0.0.0 --port 5000
     volumes:
       - .:/app
     env_file:
