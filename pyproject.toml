@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Michael <mpgg2000@gmail.com>"]
 readme = "README.md"
-packages = [{include = "lead_orchestrator"}]
+# packages = [{include = "lead_orchestrator"}]
 
 [tool.poetry.scripts]
 server = "lead_orchestrator.main:run"
