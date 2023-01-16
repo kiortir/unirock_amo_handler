@@ -1,0 +1,1 @@
+from .fastapi_decorators import request_to_wildcard_params

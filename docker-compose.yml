@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+
+  application:
+    image: amo1csync:latest
+    container_name: fastapi
+
+    depends_on:
+      - redis
+    build:
+      context: ./
+    command: gunicorn app.main:app --bind 0.0.0.0:5000 -k uvicorn.workers.UvicornWorker
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    restart: always
+    environment:
+      REDIS_HOST: redis
+
+  redis:
+    image: 'redis:7.0.5'
+    container_name: redis
+
+    volumes:
+      - .services/redis/redis-data:/var/lib/redis
+      - .services/redis/redis.conf:/usr/local/etc/redis/redis.conf
