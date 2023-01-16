@@ -10,7 +10,7 @@ services:
       - redis
     build:
       context: ./
-    command: gunicorn app.main:app --bind 0.0.0.0:5000 -k uvicorn.workers.UvicornWorker
+    command: gunicorn app.main:app --proxy-headers --bind 0.0.0.0:5000  -k uvicorn.workers.UvicornWorker
     volumes:
       - .:/app
     env_file:
