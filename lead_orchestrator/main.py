@@ -14,7 +14,7 @@ from .tools import request_to_wildcard_params
 from .tools.fastapi_decorators import PostTrustedHostMiddleware
 from .tools.utility_decorators import timeit
 
-app = FastAPI(root_path='/api/amo')
+app = FastAPI()
 
 app.add_middleware(PostTrustedHostMiddleware,
                    allowed_hosts=settings.ALLOWED_HOSTS)

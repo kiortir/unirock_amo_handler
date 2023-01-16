@@ -10,7 +10,7 @@ services:
       - redis
     build:
       context: ./
-    command: uvicorn lead_orchestrator.main:app --proxy-headers --port 5000 --host 0.0.0.0
+    command: uvicorn lead_orchestrator.main:app --proxy-headers --port 5000 --host 0.0.0.0 --root-path /api/amo
     volumes:
       - .:/app
     env_file:
