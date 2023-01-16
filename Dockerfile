@@ -74,6 +74,6 @@ RUN poetry install --only main
 FROM python-base as production
 ENV FASTAPI_ENV=production
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
-COPY ./lead_orchestrator /code/lead_orchestrator/
+COPY ./lead_orchestrator/ /code/lead_orchestrator/
 WORKDIR /code
 # CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
