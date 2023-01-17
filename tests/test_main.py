@@ -19,6 +19,6 @@ async def test_webhook():
 
     async with AsyncClient(app=app) as ac:
 
-        r = await ac.post('http://127.0.0.1:5000/tasks/webhook', data=qsparser.stringify(hook))
+        r = await ac.post('http://127.0.0.1:5000/tasks/webhook', content=qsparser.stringify(hook))
 
-    print(r.text)
+    # print(r.content)

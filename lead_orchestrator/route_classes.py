@@ -12,8 +12,7 @@ class QSRequest(Request):
         if not hasattr(self, "_body"):
             body = await super().body()
             body = qsparser.parse(unquote(body.decode("utf-8")))
-            self._body = ujson.dumps(body).encode("utf-8")
-            print(self._body)
+            self._body = ujson.dumps(body, encode_html_chars=False, ensure_ascii=False).encode()
         return self._body
 
 
@@ -23,10 +22,7 @@ class QSEncodedRoute(APIRoute):
 
         async def custom_route_handler(request: Request) -> Response:
             request = QSRequest(request.scope, request.receive)
-            try:
-                r = await original_route_handler(request)
-            except Exception as e:
-                print(e.errors())
-            return r
+            print(request)
+            return await original_route_handler(request)
 
         return custom_route_handler
