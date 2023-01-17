@@ -23,6 +23,9 @@ class QSEncodedRoute(APIRoute):
 
         async def custom_route_handler(request: Request) -> Response:
             request = QSRequest(request.scope, request.receive)
-            return await original_route_handler(request)
+            r = await original_route_handler(request)
+
+            print(r.body)
+            return r
 
         return custom_route_handler
