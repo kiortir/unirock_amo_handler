@@ -10,6 +10,6 @@ async def task_webhook(request: Request):
     print("Hook recieved")
     print(await request.body())
     print(request.client)
-    print(request.json())
+    print(await request.json())
 
     return Response(status_code=200)
