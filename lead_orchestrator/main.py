@@ -98,7 +98,7 @@ async def webhook(hook: WebHook, background_tasks: BackgroundTasks):
 @app.post("/tasks/webhook")
 async def task_webhook(request: Request):
     print("Hook recieved")
-    print(request.body())
+    print(await request.body())
     print(request.client)
 
     return Response(status_code=200)
