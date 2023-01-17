@@ -1,5 +1,5 @@
 from datetime import datetime
-from fastapi import FastAPI, HTTPException, Response, BackgroundTasks
+from fastapi import FastAPI, HTTPException, Response, BackgroundTasks, Request
 
 from amocrm_api_client.models import Lead, Page, User, CreateTask
 from amocrm_api_client.make_amocrm_request.core.exceptions import \
@@ -96,14 +96,22 @@ async def webhook(hook: WebHook, background_tasks: BackgroundTasks):
 
 
 @app.post("/tasks/webhook")
-async def task_webhook(hook: WebHook, background_tasks: BackgroundTasks):
+async def task_webhook(request: Request):
     print("Hook recieved")
-    print(hook.json())
-
-    background_tasks.add_task(
-        create_task_measurement, hook)
+    print(request.body())
+    print(request.client)
 
     return Response(status_code=200)
+
+# @app.post("/tasks/webhook")
+# async def task_webhook(hook: WebHook, background_tasks: BackgroundTasks):
+#     print("Hook recieved")
+#     print(hook.json())
+
+#     background_tasks.add_task(
+#         create_task_measurement, hook)
+
+#     return Response(status_code=200)
 
 
 def run(app_path="lead_orchestrator.main:app"):
