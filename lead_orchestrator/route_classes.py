@@ -22,8 +22,9 @@ class QSRequest(Request):
     def headers(self) -> Headers:
         if not hasattr(self, "_headers"):
             headers = self.scope.get('headers', [])
-            headers.append((b'content-type', b'application/json'))
-            self.scope['headers'] = set(headers)
+            headers = dict(headers)
+            headers[b'content-type'] = b'application/json'
+            self.scope['headers'] = headers.items()
             self._headers = Headers(scope=self.scope)
         return self._headers
 
