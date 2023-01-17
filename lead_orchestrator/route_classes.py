@@ -8,8 +8,8 @@ class QSRequest(Request):
     async def body(self) -> bytes:
         if not hasattr(self, "_body"):
             body = await super().body()
-            body = qsparser.parse(str(body))
-            self._body = ujson.dumps(body).encode('utf-8')
+            body = qsparser.parse(body.decode("utf-8"))
+            self._body = ujson.dumps(body).encode("utf-8")
         return self._body
 
 
