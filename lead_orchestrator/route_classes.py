@@ -1,14 +1,17 @@
+import html
+from typing import Callable
+
 import qsparser
+import ujson
 from fastapi import Request, Response
 from fastapi.routing import APIRoute
-import ujson
-from typing import Callable
+
 
 class QSRequest(Request):
     async def body(self) -> bytes:
         if not hasattr(self, "_body"):
             body = await super().body()
-            body = qsparser.parse(body.decode("utf-8"))
+            body = qsparser.parse(html.unescape(body.decode("utf-8")))
             self._body = ujson.dumps(body).encode("utf-8")
         return self._body
 
