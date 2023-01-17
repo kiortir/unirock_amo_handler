@@ -21,11 +21,10 @@ class QSRequest(Request):
     @property
     def headers(self) -> Headers:
         if not hasattr(self, "_headers"):
-            self._headers = Headers(
-                headers={
-                    "content-type": "application/json"
-                },
-                scope=self.scope)
+            headers = self.scope.get('headers', [])
+            self.scope['headers'] = list(headers)
+            print(self.scope['headers'])
+            self._headers = Headers(scope=self.scope)
         return self._headers
 
 
