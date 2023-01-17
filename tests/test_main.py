@@ -1,9 +1,12 @@
-from lead_orchestrator.main import app
-from fastapi.testclient import TestClient
-import json
-import pytest
 import asyncio
+import json
+
+import pytest
+import qsparser
+from fastapi.testclient import TestClient
 from httpx import AsyncClient
+
+from lead_orchestrator.main import app
 
 client = TestClient(app)
 pytest_plugins = ('pytest_asyncio',)
@@ -15,7 +18,7 @@ async def test_webhook():
         hook = json.load(f)
 
     async with AsyncClient(app=app) as ac:
-        
-        responses = await asyncio.gather(*[ac.post('http://127.0.0.1:5000/webhook', json=hook) for _ in range(15)])
 
-    print(responses)
+        r = await ac.post('http://127.0.0.1:5000/tasks/webhook', data=qsparser.stringify(hook))
+
+    print(r.text)

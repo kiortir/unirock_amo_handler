@@ -48,7 +48,7 @@ class LeadAction(BaseModel):
     delete: LeadField0 | None = None
     add: list[LeadHookStatus] | None = None
     update: list[LeadHookStatus] | None = None
-    status: list[LeadHookStatus] | None = None
+    status: list[LeadField0] | None = None
 
 
 class _Links(BaseModel):
