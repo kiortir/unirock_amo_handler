@@ -7,6 +7,7 @@ from amocrm_api_client.make_amocrm_request.core.exceptions import \
 
 from . import settings
 from .settings import client_1c
+from .webhook_routes import amo_router
 from .amo.handler import (get_company_info, get_contacts, get_lead_info,
                           get_leads, get_pipelines, get_users, get_tasks, add_task, create_task_measurement)
 from .amo.models import WebHook
@@ -15,7 +16,7 @@ from .tools.fastapi_decorators import PostTrustedHostMiddleware
 from .tools.utility_decorators import timeit
 
 app = FastAPI()
-
+app.include_router(amo_router)
 # app.add_middleware(PostTrustedHostMiddleware,
 #                    allowed_hosts=settings.ALLOWED_HOSTS)
 
@@ -94,14 +95,6 @@ async def webhook(hook: WebHook, background_tasks: BackgroundTasks):
 
     return Response(status_code=200)
 
-
-@app.post("/tasks/webhook")
-async def task_webhook(request: Request):
-    print("Hook recieved")
-    print(await request.body())
-    print(request.client)
-
-    return Response(status_code=200)
 
 # @app.post("/tasks/webhook")
 # async def task_webhook(hook: WebHook, background_tasks: BackgroundTasks):
