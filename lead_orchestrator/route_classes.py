@@ -1,4 +1,4 @@
-import html
+from urllib.parse import unquote
 from typing import Callable
 
 import qsparser
@@ -11,7 +11,7 @@ class QSRequest(Request):
     async def body(self) -> bytes:
         if not hasattr(self, "_body"):
             body = await super().body()
-            body = qsparser.parse(html.unescape(body.decode("utf-8")))
+            body = qsparser.parse(unquote(body.decode("utf-8")))
             self._body = ujson.dumps(body).encode("utf-8")
         return self._body
 
