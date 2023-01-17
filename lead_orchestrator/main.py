@@ -16,8 +16,8 @@ from .tools.utility_decorators import timeit
 
 app = FastAPI()
 
-app.add_middleware(PostTrustedHostMiddleware,
-                   allowed_hosts=settings.ALLOWED_HOSTS)
+# app.add_middleware(PostTrustedHostMiddleware,
+#                    allowed_hosts=settings.ALLOWED_HOSTS)
 
 
 @app.get("/")
