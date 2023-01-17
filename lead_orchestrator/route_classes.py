@@ -13,6 +13,7 @@ class QSRequest(Request):
             body = await super().body()
             body = qsparser.parse(unquote(body.decode("utf-8")))
             self._body = ujson.dumps(body).encode("utf-8")
+            print(self._body)
         return self._body
 
 
