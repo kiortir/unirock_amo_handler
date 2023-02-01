@@ -1,22 +1,25 @@
 from datetime import datetime
-from fastapi import FastAPI, HTTPException, Response, BackgroundTasks, Request
 
-from amocrm_api_client.models import Lead, Page, User, CreateTask
-from amocrm_api_client.make_amocrm_request.core.exceptions import \
-    EntityNotFoundException
+from amocrm_api_client.make_amocrm_request.core.exceptions import (
+    EntityNotFoundException,
+)
 
-from . import settings
-from .settings import client_1c
-from .webhook_routes import amo_router
-from .amo.handler import (get_company_info, get_contacts, get_lead_info,
-                          get_leads, get_pipelines, get_users, get_tasks, add_task, create_task_measurement)
-from .amo.models import WebHook
+from amocrm_api_client.models import CreateTask, Lead, Page, User
+from fastapi import FastAPI, HTTPException, Response
+
+from .amo.handler import (
+    add_task,
+    get_company_info,
+    get_contacts,
+    get_lead_info,
+    get_leads,
+    get_pipelines,
+    get_tasks,
+    get_users,
+)
 from .tools import request_to_wildcard_params
-from .tools.fastapi_decorators import PostTrustedHostMiddleware
-from .tools.utility_decorators import timeit
 
 app = FastAPI()
-app.include_router(amo_router)
 # app.add_middleware(PostTrustedHostMiddleware,
 #                    allowed_hosts=settings.ALLOWED_HOSTS)
 
@@ -70,45 +73,29 @@ async def users():
     return info
 
 
-@app.get("/settask")
-async def test_message():
-    return await get_tasks()
-    return Response(status_code=201)
-
-
 @app.get("/tasks/add")
-async def add_task_():
-    await add_task(CreateTask(
-        entity_id=26066553,
-        entity_type="leads",
-        responsible_user_id=2852878,
-        text="tetsts",
-        complete_till=datetime(2023, 2, 1, 12, 36)
-    ))
-
-
-@app.post("/webhook")
-async def webhook(hook: WebHook, background_tasks: BackgroundTasks):
-    print("Hook recieved")
-    background_tasks.add_task(
-        client_1c.post, "https://webhook.site/2f469d63-36c6-41af-9527-bf84cf6da3c9", json=hook.dict())
-
+async def add_task_(
+    entity_id: int,
+    entity_type: str,
+    responsible_user_id: int,
+    text: str,
+    complete_till: datetime,
+):
+    await add_task(
+        CreateTask(
+            entity_id=entity_id,
+            entity_type=entity_type,
+            responsible_user_id=responsible_user_id,
+            text=text,
+            complete_till=complete_till,
+        )
+    )
     return Response(status_code=200)
-
-
-# @app.post("/tasks/webhook")
-# async def task_webhook(hook: WebHook, background_tasks: BackgroundTasks):
-#     print("Hook recieved")
-#     print(hook.json())
-
-#     background_tasks.add_task(
-#         create_task_measurement, hook)
-
-#     return Response(status_code=200)
 
 
 def run(app_path="lead_orchestrator.main:app"):
     import uvicorn
+
     uvicorn.run(app_path, port=5000, log_level="info", reload=True)
 
 

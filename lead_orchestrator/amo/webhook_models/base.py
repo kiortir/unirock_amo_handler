@@ -17,5 +17,5 @@ class BodyPattern(BaseModel, ABC):
 
     @property
     @abstractmethod
-    def data() -> dict:
+    def data(self) -> dict:
         raise NotImplementedError()

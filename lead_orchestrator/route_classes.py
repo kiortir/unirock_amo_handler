@@ -1,7 +1,7 @@
 from urllib.parse import unquote
 from typing import Callable
 
-import qsparser
+from qsparser import parse  # type: ignore
 import ujson
 from fastapi import Request, Response
 from fastapi.routing import APIRoute
@@ -13,18 +13,19 @@ class QSRequest(Request):
     async def body(self) -> bytes:
         if not hasattr(self, "_body"):
             body = await super().body()
-            body = qsparser.parse(unquote(body.decode("utf-8")))
+            body = parse(unquote(body.decode("utf-8")))
             self._body = ujson.dumps(
-                body, encode_html_chars=False, ensure_ascii=False).encode()
+                body, encode_html_chars=False, ensure_ascii=False
+            ).encode()
         return self._body
 
     @property
     def headers(self) -> Headers:
         if not hasattr(self, "_headers"):
-            headers = self.scope.get('headers', [])
+            headers = self.scope.get("headers", [])
             headers = dict(headers)
-            headers[b'content-type'] = b'application/json'
-            self.scope['headers'] = headers.items()
+            headers[b"content-type"] = b"application/json"
+            self.scope["headers"] = headers.items()
             self._headers = Headers(scope=self.scope)
         return self._headers
 

@@ -1,17 +1,18 @@
-import ujson
-from amocrm_api_client.model_builder.ModelBuilderImpl import ModelBuilderImpl
-from amocrm_api_client.make_amocrm_request.core.exceptions import EntityNotFoundException
 import asyncio
 from functools import wraps
 
-from amocrm_api_client.models.Filters import LeadListFilter, CustomersListFilter, TaskListFilter
-from amocrm_api_client.models import Lead, Page, User, CreateTask
+import ujson
+from amocrm_api_client.make_amocrm_request.core.exceptions import \
+    EntityNotFoundException
+from amocrm_api_client.model_builder.ModelBuilderImpl import ModelBuilderImpl
+from amocrm_api_client.models import CreateTask, Lead, Page, User
+from amocrm_api_client.models.Filters import (CustomersListFilter,
+                                              LeadListFilter, TaskListFilter)
 from amocrm_api_client.models.lead.AddNote import NoteTypes
 
-
-from . import client
-from ..tools.utility_decorators import timeit
 from ..redis_handler.cache import AsyncRedisCache
+from ..tools.utility_decorators import timeit
+from . import client
 
 
 async def get_company_info():

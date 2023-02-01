@@ -1,7 +1,7 @@
 from typing import Callable
 from urllib.parse import unquote
 
-import qsparser
+import qsparser  # type: ignore
 from fastapi import Request
 from .utility_decorators import get_pipe
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
@@ -10,9 +10,11 @@ from starlette.types import Receive, Scope, Send
 
 
 class PostTrustedHostMiddleware(TrustedHostMiddleware):
-
-    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
-        if scope.get('method') != "POST":
+    async def __call__(self,
+                       scope: Scope,
+                       receive: Receive,
+                       send: Send) -> None:
+        if scope.get("method") != "POST":
             return await self.app(scope, receive, send)
 
         return await super().__call__(scope, receive, send)

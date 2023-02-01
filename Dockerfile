@@ -77,4 +77,4 @@ COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 RUN echo $(ls -a)
 COPY ./lead_orchestrator /code/lead_orchestrator
 WORKDIR /code
-# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "lead_orchestrator.main:app", "--host", "0.0.0.0", "--port", "5000", "--root-path", "/amo"]
