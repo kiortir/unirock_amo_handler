@@ -18,8 +18,9 @@ from .amo.handler import (
     get_users,
 )
 from .tools import request_to_wildcard_params
+from .settings import root_path
 
-app = FastAPI()
+app = FastAPI(root_path=root_path)
 # app.add_middleware(PostTrustedHostMiddleware,
 #                    allowed_hosts=settings.ALLOWED_HOSTS)
 
